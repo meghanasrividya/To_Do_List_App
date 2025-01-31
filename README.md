@@ -40,4 +40,4 @@ A sleek and interactive Todo Dashboard built using **HTML, CSS, and JavaScript**
 ## 🎬 Live Demo
   Check out the live demo on GitHub Pages:
 
-🔗 Demo Link
+[🔗 Demo Link](https://meghanasrividya.github.io/To_Do_List_App/)
