@@ -22,6 +22,11 @@ function addTask() {
         return;
     }
 
+    if (tasks.some(task => task.text.toLowerCase() === taskText.toLowerCase())) {
+        alert('Task already exists!');
+        return;
+    }
+
     // Create new task object
     const newTask = {
         id: Date.now(),

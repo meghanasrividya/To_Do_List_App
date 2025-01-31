@@ -1,42 +1,78 @@
+<!-- This tells the browser we're using HTML5 -->
 <!DOCTYPE html>
+<!-- Start of HTML document, language set to English -->
 <html lang="en">
 <head>
+    <!-- CHARACTER SET - Allows special characters and emojis -->
     <meta charset="UTF-8">
+    
+    <!-- VIEWPORT SETTINGS - Makes site mobile-friendly -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- PAGE TITLE - Shows in browser tab -->
     <title>Modern Todo Dashboard</title>
+    
+    <!-- LINK TO STYLESHEET - Connects our CSS design file -->
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+    <!-- MAIN CONTAINER - Wraps all page content -->
     <div class="container">
+    
+        <!-- HEADER SECTION - Contains title and input area -->
         <header class="header">
+            <!-- MAIN HEADING - Page title -->
             <h1>Todo Dashboard</h1>
+            
+            <!-- INPUT AREA - Where users add new tasks -->
             <div class="input-group">
+                <!-- TEXT INPUT FIELD - For typing tasks -->
                 <div class="input-field">
-                    <input type="text" id="taskInput" placeholder="Add new task..." aria-label="Task description">
+                    <input type="text" 
+                           id="taskInput" 
+                           placeholder="Add new task..."
+                           aria-label="Task description"> <!-- Helps screen readers -->
                 </div>
+                
+                <!-- DATE INPUT FIELD - For selecting due dates -->
                 <div class="input-field">
-                    <input type="date" id="taskDate" aria-label="Due date">
+                    <input type="date" 
+                           id="taskDate"
+                           aria-label="Due date"> <!-- Helps screen readers -->
                 </div>
-                <button id="addTaskBtn">➕ Add Task</button>
+                
+                <!-- ADD TASK BUTTON - Click to add new tasks -->
+                <button id="addTaskBtn">
+                    ➕ Add Task <!-- Emoji makes button more visual -->
+                </button>
             </div>
         </header>
 
+        <!-- MAIN CONTENT AREA - Where tasks are displayed -->
         <main class="dashboard">
-            <table class="todo-table" role="grid">
+            <!-- TASK TABLE - Shows all todo items -->
+            <table class="todo-table" role="grid"> <!-- Helps screen readers -->
+                <!-- TABLE HEADER - Column titles -->
                 <thead>
                     <tr>
-                        <th scope="col">Status</th>
-                        <th scope="col">Task</th>
-                        <th scope="col">Due Date</th>
-                        <th scope="col">Actions</th>
+                        <th scope="col">Status</th> <!-- Checkbox column -->
+                        <th scope="col">Task</th>    <!-- Task description -->
+                        <th scope="col">Due Date</th> <!-- Due date -->
+                        <th scope="col">Actions</th> <!-- Edit/Delete buttons -->
                     </tr>
                 </thead>
+                
+                <!-- TABLE BODY - Where tasks will appear -->
                 <tbody id="todoBody">
-                    <!-- Tasks will be inserted here -->
+                    <!-- JavaScript will add tasks here automatically -->
+                    <!-- This area starts empty and gets filled by our code -->
                 </tbody>
             </table>
         </main>
     </div>
+
+    <!-- LINK TO JAVASCRIPT FILE - Adds functionality to our page -->
     <script src="app.js"></script>
 </body>
 </html>
