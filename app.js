@@ -19,11 +19,11 @@ function addTask() {
     // Get input value and remove whitespace from both ends
     const taskText = taskInput.value.trim();
 
-    // Validation: Check for empty input or duplicate tasks
-    if (taskText === "" || tasks.includes(taskText)) {
+    if (taskText === "" || tasks.map(t => t.toLowerCase()).includes(taskText.toLowerCase())) {
         alert("Please enter a valid, non-duplicate task.");
-        return; // Exit function if invalid
+        return;
     }
+    
 
     // Add valid task to the array
     tasks.push(taskText);
@@ -108,3 +108,13 @@ taskInput.addEventListener('keypress', function(event) {
         addTask(); // Trigger add task function
     }
 });
+
+
+// Save tasks to localStorage after any change
+localStorage.setItem('tasks', JSON.stringify(tasks));
+
+// Load tasks from localStorage when the page is loaded
+window.onload = function() {
+    tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    renderTasks();
+}
