@@ -1,121 +1,155 @@
 // script.js
 
 // ===== DOM ELEMENT SELECTIONS =====
-// Get reference to the task input field
-const taskInput = document.getElementById('taskInput');
-// Get reference to the "Add Task" button
-const addTaskBtn = document.getElementById('addTaskBtn');
-// Get reference to the task list container
-const taskList = document.getElementById('taskList');
+// Get references to essential DOM elements
+const taskInput = document.getElementById('taskInput');       // Input field for new tasks
+const addTaskBtn = document.getElementById('addTaskBtn');     // "Add Task" button
+const taskList = document.getElementById('taskList');         // Container for task items
 
 // ===== DATA STORAGE =====
-// Initialize empty array to store tasks
-let tasks = [];
+// Load tasks from localStorage or initialize empty array
+let tasks = JSON.parse(localStorage.getItem('tasks')) || [];  // Persistent task storage
 
-// ===== CORE FUNCTIONS =====
+// ===== CORE FUNCTIONALITY =====
 
-// Function to handle task addition
+/**
+ * Adds a new task to the list after validation
+ */
 function addTask() {
-    // Get input value and remove whitespace from both ends
+    // Trim whitespace from input value
     const taskText = taskInput.value.trim();
-
-    if (taskText === "" || tasks.map(t => t.toLowerCase()).includes(taskText.toLowerCase())) {
-        alert("Please enter a valid, non-duplicate task.");
+    
+    // Validate input: check for empty or duplicate (case-insensitive)
+    const isDuplicate = tasks.some(task => 
+        task.toLowerCase() === taskText.toLowerCase()
+    );
+    
+    // Show error message and exit if invalid
+    if (!taskText) {
+        alert("Please enter a task description.");
+        return;
+    }
+    if (isDuplicate) {
+        alert("This task already exists!");
         return;
     }
 
-    // Add valid task to the array
+    // Add valid task to array
     tasks.push(taskText);
-    // Save updated tasks to localStorage
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-    // Update UI with new task list
+    
+    // Update storage and UI
+    updateLocalStorage();
     renderTasks();
-    // Clear input field after submission
+    
+    // Clear input field
     taskInput.value = '';
 }
 
-// Function to handle task deletion
+/**
+ * Deletes a task from the list
+ * @param {string} taskText - The exact text of the task to delete
+ */
 function deleteTask(taskText) {
-    // Filter out the task to be deleted
+    // Filter out the specified task
     tasks = tasks.filter(task => task !== taskText);
-    // Save updated tasks to localStorage
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-    // Update UI with modified task list
+    
+    // Update storage and UI
+    updateLocalStorage();
     renderTasks();
 }
 
-// Function to handle task editing
-function editTask(taskText) {
-    // Show prompt with current task text pre-filled
-    const editedText = prompt("Edit your task:", taskText);
+/**
+ * Edits an existing task with validation
+ * @param {string} oldText - The original task text to edit
+ */
+function editTask(oldText) {
+    // Prompt user with current value (trimmed)
+    const newText = prompt("Edit task:", oldText)?.trim();
+    
+    // Exit if user cancels or enters same text
+    if (!newText || newText === oldText) return;
+    
+    // Check for duplicates with new text
+    const isDuplicate = tasks.some(task => 
+        task.toLowerCase() === newText.toLowerCase()
+    );
+    
+    if (isDuplicate) {
+        alert("This task already exists!");
+        return;
+    }
 
-    // Validate edited text:
-    // - Must not be empty after trimming
-    // - Must be different from original
-    if (editedText && editedText.trim() !== "" && editedText !== taskText) {
-        // Find index of original task
-        const taskIndex = tasks.indexOf(taskText);
-        // Update task in array with trimmed version
-        tasks[taskIndex] = editedText.trim();
-        // Save updated tasks to localStorage
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-        // Refresh task display
+    // Find and update task
+    const taskIndex = tasks.indexOf(oldText);
+    if (taskIndex > -1) {
+        tasks[taskIndex] = newText;
+        updateLocalStorage();
         renderTasks();
     }
 }
 
-// ===== UI RENDERING =====
+// ===== HELPER FUNCTIONS =====
+
+/**
+ * Safely updates localStorage with current tasks
+ */
+function updateLocalStorage() {
+    try {
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    } catch (error) {
+        console.error('LocalStorage error:', error);
+        alert("Failed to save tasks. Your browser storage might be full or disabled.");
+    }
+}
+
+/**
+ * Renders all tasks to the UI
+ */
 function renderTasks() {
-    // Clear current task list display
+    // Clear existing tasks
     taskList.innerHTML = '';
-
-    // Create HTML elements for each task
+    
+    // Create elements for each task
     tasks.forEach(task => {
-        // Create container div for task
+        // Create container div
         const taskElement = document.createElement('div');
-        taskElement.classList.add('task'); // Add CSS class
-
-        // Create span element for task text display
-        const taskTextElement = document.createElement('span');
-        taskTextElement.textContent = task;
-
-        // Create edit button
-        const editBtn = document.createElement('button');
-        editBtn.textContent = 'Edit';
-        // Add click handler with closure to preserve current task value
-        editBtn.onclick = () => editTask(task);
-
-        // Create delete button
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Delete';
-        // Add click handler with closure to preserve current task value
-        deleteBtn.onclick = () => deleteTask(task);
-
-        // Assemble task element components
-        taskElement.appendChild(taskTextElement);
-        taskElement.appendChild(editBtn);
-        taskElement.appendChild(deleteBtn);
-
-        // Add complete task element to task list
+        taskElement.className = 'task';
+        
+        // Create task text display
+        const textElement = document.createElement('span');
+        textElement.textContent = task;  // Safe text insertion
+        
+        // Create edit button with proper event handling
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit';
+        editButton.addEventListener('click', () => editTask(task));
+        
+        // Create delete button with proper event handling
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', () => deleteTask(task));
+        
+        // Assemble elements
+        taskElement.append(textElement, editButton, deleteButton);
         taskList.appendChild(taskElement);
     });
 }
 
 // ===== EVENT HANDLERS =====
 
-// Add click event listener to Add Task button
+// Add task button click handler
 addTaskBtn.addEventListener('click', addTask);
 
-// Add keyboard event listener for Enter key submission
-taskInput.addEventListener('keypress', function(event) {
-    // Check if pressed key is Enter (key code 13)
+// Enter key handler for input field
+taskInput.addEventListener('keyup', (event) => {
     if (event.key === 'Enter') {
-        addTask(); // Trigger add task function
+        addTask();
     }
 });
 
-// Load tasks from localStorage when the page is loaded
-window.onload = function() {
-    tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+// ===== INITIALIZATION =====
+
+// Load and display tasks when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
     renderTasks();
-}
+});
