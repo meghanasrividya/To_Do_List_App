@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Declares the document type as HTML5 -->
+    <!DOCTYPE html>
+
+    <!-- Specifies the language of the document as English -->
+    <html lang="en">
+
+<head>
+    <!-- Defines character encoding as UTF-8 to support various text characters -->
+    <meta charset="UTF-8">
+
+    <!-- Configures the viewport to ensure responsiveness on different screen sizes -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Sets the title of the webpage, which appears on the browser tab -->
+    <title>Modern Todo Dashboard</title>
+
+    <!-- Links an external CSS file (style.css) for styling the webpage -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Main container for the Todo Dashboard -->
+    <div class="container">
+
+        <!-- Header section containing the title and input fields -->
+        <div class="header">
+            <!-- Main heading of the Todo Dashboard -->
+            <h1>Todo Dashboard</h1>
+
+            <!-- Input group for adding new tasks -->
+            <div class="input-group">
+                <!-- Input field for entering a new task -->
+                <input type="text" id="taskInput" placeholder="Add new task...">
+                
+                <!-- Input field for selecting a due date for the task -->
+                <input type="date" id="taskDate">
+                
+                <!-- Button to add the task, triggers the addTask() function when clicked -->
+                <button onclick="addTask()">Add Task</button>
+            </div>
+        </div>
+
+        <!-- Dashboard section that displays the task list in a table format -->
+        <div class="dashboard">
+            <table class="todo-table">
+                <!-- Table header section defining column names -->
+                <thead>
+                    <tr>
+                        <th>Status</th>  <!-- Column for task completion status -->
+                        <th>Task</th>    <!-- Column for task description -->
+                        <th>Date</th>    <!-- Column for due date -->
+                        <th>Actions</th> <!-- Column for action buttons (edit/delete) -->
+                    </tr>
+                </thead>
+                <!-- Table body where tasks will be dynamically added -->
+                <tbody id="todoBody">
+                    <!-- Todo items will be inserted here via JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Links an external JavaScript file (app.js) that contains interactive logic -->
+    <script src="app.js"></script>
+</body>
+</html>

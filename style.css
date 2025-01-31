@@ -1,0 +1,220 @@
+/* 
+ * Global Styles: Reset margins, padding, and set a universal font-family
+ */
+ * {
+    margin: 0; /* Removes default margin */
+    padding: 0; /* Removes default padding */
+    box-sizing: border-box; /* Ensures padding & border do not affect element width/height */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Sets a modern font */
+}
+
+/* 
+ * Body Styles: Sets background color and overall spacing
+ */
+body {
+    background: #f0f2f5; /* Light gray background for better contrast */
+    padding: 2rem; /* Adds space around the page */
+}
+
+/* 
+ * Main Container: Defines the max width and central alignment
+ */
+.container {
+    max-width: 1200px; /* Limits width for better readability */
+    margin: 0 auto; /* Centers container horizontally */
+    background: white; /* White background for content area */
+    border-radius: 12px; /* Smooth rounded corners */
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1); /* Subtle shadow effect */
+    overflow: hidden; /* Ensures no overflowing content */
+}
+
+/* 
+ * Header: Adds a stylish gradient background and white text
+ */
+.header {
+    padding: 2rem; /* Adds spacing around the header */
+    background: linear-gradient(135deg, #6366f1, #8b5cf6); /* Smooth purple gradient */
+    color: white; /* Ensures text is readable on dark background */
+}
+
+/* 
+ * Header Title: Increases font weight and adds bottom margin
+ */
+.header h1 {
+    font-weight: 600; /* Makes the title bold */
+    margin-bottom: 1rem; /* Adds space below the title */
+}
+
+/* 
+ * Input Group: Aligns input fields and buttons horizontally with spacing
+ */
+.input-group {
+    display: flex; /* Uses flexbox for alignment */
+    gap: 1rem; /* Adds space between input fields */
+}
+
+/* 
+ * Input Fields: Styles the text input and date input
+ */
+input[type="text"], input[type="date"] {
+    flex: 1; /* Makes input fields take equal width */
+    padding: 0.8rem; /* Adds inner padding for better appearance */
+    border: none; /* Removes default borders */
+    border-radius: 8px; /* Smooth edges */
+    font-size: 1rem; /* Sets readable font size */
+    background: rgba(255,255,255,0.9); /* Light transparent background */
+}
+
+/* 
+ * Button Styles: Defines the default button look
+ */
+button {
+    padding: 0.8rem 1.5rem; /* Adds padding for a comfortable click area */
+    border: none; /* Removes default border */
+    border-radius: 8px; /* Smooth corners */
+    background: #4f46e5; /* Dark blue background */
+    color: white; /* White text for contrast */
+    cursor: pointer; /* Changes cursor to pointer on hover */
+    transition: all 0.3s ease; /* Smooth color change effect */
+}
+
+/* 
+ * Button Hover Effect: Changes background color on hover
+ */
+button:hover {
+    background: #4338ca; /* Slightly darker blue on hover */
+}
+
+/* 
+ * Dashboard Section: Adds padding inside the task table area
+ */
+.dashboard {
+    padding: 2rem; /* Space around the table */
+}
+
+/* 
+ * Todo Table: Sets table width and spacing
+ */
+.todo-table {
+    width: 100%; /* Makes table span full container width */
+    border-collapse: collapse; /* Removes spacing between table borders */
+    margin-top: 1rem; /* Adds space above the table */
+}
+
+/* 
+ * Table Headers: Styles column headers for readability
+ */
+.todo-table th {
+    text-align: left; /* Aligns text to the left */
+    padding: 1rem; /* Adds space inside headers */
+    background: #f8fafc; /* Light background for contrast */
+    color: #64748b; /* Darker text for readability */
+    font-weight: 500; /* Slightly bold */
+    border-bottom: 2px solid #e2e8f0; /* Adds bottom border */
+}
+
+/* 
+ * Table Cells: Styles rows and columns for a clean look
+ */
+.todo-table td {
+    padding: 1rem; /* Adds space inside table cells */
+    border-bottom: 1px solid #e2e8f0; /* Light gray border between rows */
+}
+
+/* 
+ * Task Status Styles: Creates a pill-like label for task status
+ */
+.status {
+    display: inline-block; /* Makes it behave like a small box */
+    padding: 0.4rem 0.8rem; /* Adds spacing */
+    border-radius: 20px; /* Rounded edges for a pill-like shape */
+    font-size: 0.9rem; /* Adjusts font size */
+    font-weight: 500; /* Makes text slightly bold */
+}
+
+/* 
+ * Pending Task Style: Orange background with dark text
+ */
+.status.pending {
+    background: #fff4e5; /* Light orange background */
+    color: #f59e0b; /* Dark orange text */
+}
+
+/* 
+ * Completed Task Style: Green background with dark green text
+ */
+.status.completed {
+    background: #ecfdf5; /* Light green background */
+    color: #10b981; /* Dark green text */
+}
+
+/* 
+ * Action Buttons: Default styles for edit, complete, and delete buttons
+ */
+.action-button {
+    padding: 0.5rem 1rem; /* Adds padding for clickability */
+    border-radius: 6px; /* Smooth corners */
+    border: none; /* Removes default borders */
+    cursor: pointer; /* Pointer on hover */
+    transition: all 0.2s ease; /* Smooth effect on hover */
+    margin-left: 0.5rem; /* Adds spacing between buttons */
+}
+
+/* 
+ * Edit Button: Blue background with white text
+ */
+.edit-btn {
+    background: #e0e7ff; /* Light blue background */
+    color: #4f46e5; /* Dark blue text */
+}
+
+/* 
+ * Edit Button Hover: Slightly darker blue on hover
+ */
+.edit-btn:hover {
+    background: #c7d2fe;
+}
+
+/* 
+ * Complete Button: Green background with white text
+ */
+.complete-btn {
+    background: #d1fae5; /* Light green background */
+    color: #059669; /* Dark green text */
+}
+
+/* 
+ * Complete Button Hover: Slightly darker green on hover
+ */
+.complete-btn:hover {
+    background: #a7f3d0;
+}
+
+/* 
+ * Delete Button: Red background with white text
+ */
+.delete-btn {
+    background: #fee2e2; /* Light red background */
+    color: #dc2626; /* Dark red text */
+}
+
+/* 
+ * Delete Button Hover: Slightly darker red on hover
+ */
+.delete-btn:hover {
+    background: #fecaca;
+}
+
+/* 
+ * Completed Task Styling: Adds opacity to completed tasks for visual distinction
+ */
+tr.completed-task {
+    opacity: 0.8; /* Makes the row slightly transparent */
+}
+
+/* 
+ * Crosses out completed tasks for a visual indication
+ */
+tr.completed-task td:nth-child(2) {
+    text-decoration: line-through; /* Adds a strike-through effect */
+}
