@@ -25,7 +25,7 @@ A sleek and interactive Todo Dashboard built using **HTML, CSS, and JavaScript**
 
 ## 📂 Project Structure
 ```
-📦 Modern-Todo-Dashboard
+📦 To_Do_List_App
  │── index.html # Main HTML file
  │── style.css # Styling for the UI
  │── app.js # JavaScript functionality
