@@ -31,3 +31,13 @@ A sleek and interactive Todo Dashboard built using **HTML, CSS, and JavaScript**
  │── app.js # JavaScript functionality
  │── README.md # Project documentation
 ```
+## 🔧 How to Use
+
+1. **Clone the repository**  
+   ```bash
+   git clone https://github.com/meghanasrividya/To_Do_List_App.git
+
+## 🎬 Live Demo
+  Check out the live demo on GitHub Pages:
+
+🔗 Demo Link
