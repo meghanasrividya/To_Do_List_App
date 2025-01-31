@@ -23,10 +23,11 @@ function addTask() {
         alert("Please enter a valid, non-duplicate task.");
         return;
     }
-    
 
     // Add valid task to the array
     tasks.push(taskText);
+    // Save updated tasks to localStorage
+    localStorage.setItem('tasks', JSON.stringify(tasks));
     // Update UI with new task list
     renderTasks();
     // Clear input field after submission
@@ -37,6 +38,8 @@ function addTask() {
 function deleteTask(taskText) {
     // Filter out the task to be deleted
     tasks = tasks.filter(task => task !== taskText);
+    // Save updated tasks to localStorage
+    localStorage.setItem('tasks', JSON.stringify(tasks));
     // Update UI with modified task list
     renderTasks();
 }
@@ -54,6 +57,8 @@ function editTask(taskText) {
         const taskIndex = tasks.indexOf(taskText);
         // Update task in array with trimmed version
         tasks[taskIndex] = editedText.trim();
+        // Save updated tasks to localStorage
+        localStorage.setItem('tasks', JSON.stringify(tasks));
         // Refresh task display
         renderTasks();
     }
@@ -108,10 +113,6 @@ taskInput.addEventListener('keypress', function(event) {
         addTask(); // Trigger add task function
     }
 });
-
-
-// Save tasks to localStorage after any change
-localStorage.setItem('tasks', JSON.stringify(tasks));
 
 // Load tasks from localStorage when the page is loaded
 window.onload = function() {
