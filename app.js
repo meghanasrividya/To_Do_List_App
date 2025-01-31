@@ -1,155 +1,125 @@
-// script.js
+// DOM Elements
+const taskInput = document.getElementById('taskInput');
+const taskDate = document.getElementById('taskDate');
+const addTaskBtn = document.getElementById('addTaskBtn');
+const todoBody = document.getElementById('todoBody');
 
-// ===== DOM ELEMENT SELECTIONS =====
-// Get references to essential DOM elements
-const taskInput = document.getElementById('taskInput');       // Input field for new tasks
-const addTaskBtn = document.getElementById('addTaskBtn');     // "Add Task" button
-const taskList = document.getElementById('taskList');         // Container for task items
+// Initialize tasks from localStorage
+let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
-// ===== DATA STORAGE =====
-// Load tasks from localStorage or initialize empty array
-let tasks = JSON.parse(localStorage.getItem('tasks')) || [];  // Persistent task storage
-
-// ===== CORE FUNCTIONALITY =====
-
-/**
- * Adds a new task to the list after validation
- */
+// Add Task Function
 function addTask() {
-    // Trim whitespace from input value
     const taskText = taskInput.value.trim();
-    
-    // Validate input: check for empty or duplicate (case-insensitive)
-    const isDuplicate = tasks.some(task => 
-        task.toLowerCase() === taskText.toLowerCase()
-    );
-    
-    // Show error message and exit if invalid
+    const dueDate = taskDate.value;
+
+    // Validation
     if (!taskText) {
-        alert("Please enter a task description.");
+        alert('Please enter a task description');
         return;
     }
-    if (isDuplicate) {
-        alert("This task already exists!");
+    if (!dueDate) {
+        alert('Please select a due date');
         return;
     }
 
-    // Add valid task to array
-    tasks.push(taskText);
-    
-    // Update storage and UI
+    // Create new task object
+    const newTask = {
+        id: Date.now(),
+        text: taskText,
+        date: dueDate,
+        completed: false
+    };
+
+    tasks.push(newTask);
     updateLocalStorage();
     renderTasks();
     
-    // Clear input field
+    // Clear inputs
     taskInput.value = '';
+    taskDate.value = '';
 }
 
-/**
- * Deletes a task from the list
- * @param {string} taskText - The exact text of the task to delete
- */
-function deleteTask(taskText) {
-    // Filter out the specified task
-    tasks = tasks.filter(task => task !== taskText);
-    
-    // Update storage and UI
+// Delete Task Function
+function deleteTask(taskId) {
+    tasks = tasks.filter(task => task.id !== taskId);
     updateLocalStorage();
     renderTasks();
 }
 
-/**
- * Edits an existing task with validation
- * @param {string} oldText - The original task text to edit
- */
-function editTask(oldText) {
-    // Prompt user with current value (trimmed)
-    const newText = prompt("Edit task:", oldText)?.trim();
-    
-    // Exit if user cancels or enters same text
-    if (!newText || newText === oldText) return;
-    
-    // Check for duplicates with new text
-    const isDuplicate = tasks.some(task => 
-        task.toLowerCase() === newText.toLowerCase()
-    );
-    
-    if (isDuplicate) {
-        alert("This task already exists!");
-        return;
-    }
+// Toggle Task Status
+function toggleStatus(taskId) {
+    tasks = tasks.map(task => {
+        if (task.id === taskId) {
+            return { ...task, completed: !task.completed };
+        }
+        return task;
+    });
+    updateLocalStorage();
+    renderTasks();
+}
 
-    // Find and update task
-    const taskIndex = tasks.indexOf(oldText);
-    if (taskIndex > -1) {
-        tasks[taskIndex] = newText;
+// Edit Task Function
+function editTask(taskId) {
+    const task = tasks.find(t => t.id === taskId);
+    const newText = prompt('Edit your task:', task.text);
+    
+    if (newText && newText.trim()) {
+        task.text = newText.trim();
         updateLocalStorage();
         renderTasks();
     }
 }
 
-// ===== HELPER FUNCTIONS =====
-
-/**
- * Safely updates localStorage with current tasks
- */
-function updateLocalStorage() {
-    try {
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-    } catch (error) {
-        console.error('LocalStorage error:', error);
-        alert("Failed to save tasks. Your browser storage might be full or disabled.");
-    }
-}
-
-/**
- * Renders all tasks to the UI
- */
+// Render Tasks
 function renderTasks() {
-    // Clear existing tasks
-    taskList.innerHTML = '';
-    
-    // Create elements for each task
+    todoBody.innerHTML = '';
+
+    if (tasks.length === 0) {
+        todoBody.innerHTML = `
+            <tr class="empty-state">
+                <td colspan="4">No tasks found. Start adding tasks!</td>
+            </tr>
+        `;
+        return;
+    }
+
     tasks.forEach(task => {
-        // Create container div
-        const taskElement = document.createElement('div');
-        taskElement.className = 'task';
-        
-        // Create task text display
-        const textElement = document.createElement('span');
-        textElement.textContent = task;  // Safe text insertion
-        
-        // Create edit button with proper event handling
-        const editButton = document.createElement('button');
-        editButton.textContent = 'Edit';
-        editButton.addEventListener('click', () => editTask(task));
-        
-        // Create delete button with proper event handling
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete';
-        deleteButton.addEventListener('click', () => deleteTask(task));
-        
-        // Assemble elements
-        taskElement.append(textElement, editButton, deleteButton);
-        taskList.appendChild(taskElement);
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>
+                <input type="checkbox" 
+                       class="status-checkbox" 
+                       ${task.completed ? 'checked' : ''} 
+                       onchange="toggleStatus(${task.id})">
+            </td>
+            <td class="${task.completed ? 'completed' : ''}">${task.text}</td>
+            <td>${formatDate(task.date)}</td>
+            <td>
+                <button class="action-btn edit-btn" onclick="editTask(${task.id})">✏️ Edit</button>
+                <button class="action-btn delete-btn" onclick="deleteTask(${task.id})">🗑️ Delete</button>
+            </td>
+        `;
+        todoBody.appendChild(row);
     });
 }
 
-// ===== EVENT HANDLERS =====
+// Helper Functions
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+}
 
-// Add task button click handler
+function updateLocalStorage() {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+// Event Listeners
 addTaskBtn.addEventListener('click', addTask);
 
-// Enter key handler for input field
-taskInput.addEventListener('keyup', (event) => {
-    if (event.key === 'Enter') {
-        addTask();
-    }
+// Enter key support
+taskInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') addTask();
 });
 
-// ===== INITIALIZATION =====
-
-// Load and display tasks when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    renderTasks();
-});
+// Initial render
+document.addEventListener('DOMContentLoaded', renderTasks);
